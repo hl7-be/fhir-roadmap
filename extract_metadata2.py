@@ -268,7 +268,7 @@ def update_relation_csv(old,new):
     #try:
     new["pk"]=new["source"]+new["target_url"]
    # except Exception as err:
-      #  print("eerorrrr------------",err)
+      #  print("error------------",err)
        # print(new)
       #  new.to_csv("errro.csv")
     for idx,row in new.iterrows(): #for every row in new df
