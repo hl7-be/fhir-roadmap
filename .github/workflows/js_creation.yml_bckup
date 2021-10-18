@@ -3,7 +3,7 @@ name: Create Data
 on:
   push:
     paths:
-      - 'data.csv'
+      - 'resources.csv'
       - 'extract_metadata2.py'
       - 'data_parser.py'
       - '.github/workflows/js_creation.yml'
