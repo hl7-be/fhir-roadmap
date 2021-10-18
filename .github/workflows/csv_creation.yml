@@ -4,7 +4,9 @@ on:
   push:
     paths:
       - 'packages/'
-      - 'extracat_metadata2.py'
+      - 'extract_metadata2.py'
+      - 'data_parser.py'
+      - '.github/workflows/js_creation.yml'
       - '.github/workflows/csv_creation.yml'
 
 jobs:
