@@ -8,7 +8,7 @@ serverlocation = 'https://build.fhir.org/ig/hl7-be/'
 #igs = ['core','core-clinical','vaccination','allergy','lab']
 igs = []
 package = 'package.tgz'
-target = './test/packages'
+target = './packages'
 exclude = ['..']
 
 os.makedirs(target, exist_ok=True)

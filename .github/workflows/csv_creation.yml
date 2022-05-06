@@ -6,6 +6,7 @@ on:
       - 'packages/'
       - 'extract_metadata2.py'
       - 'data_parser.py'
+      - 'download_packages.py'
       - '.github/workflows/js_creation.yml'
       - '.github/workflows/csv_creation.yml'
 
@@ -25,10 +26,13 @@ jobs:
       - name: install python packages
         run: |
           python -m pip install --upgrade pip
-          pip install pandas csv-diff
+          pip install pandas csv-diff AdvancedHTMLParser
           
       - name: execute py script # run sj-gobierno.py to get the latest data
-        run: python extract_metadata2.py
+        run: | 
+          python download_packages.py
+          python extract_metadata2.py
+          
 
       - name: commit files
         run: |
