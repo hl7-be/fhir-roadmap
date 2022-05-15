@@ -1,24 +1,9 @@
 name: 'Trigger index build'
 description: 'triggers a rebuild of the index'
 runs:
-  runs-on: ubuntu-latest
-
+  uses: "composite"
   steps:
-  - name: checkout repo content
-    uses: actions/checkout@v2 # checkout the repository content to github runner
-
-  - run: |
-      echo $(date) > ./packages/run.txt
-  
-  - name: commit files
-    run: |
-      git config --local user.email "action@github.com"
-      git config --local user.name "GitHub Action"
-      git add -A
-      git diff --quiet && git diff --staged --quiet || git commit -m "create resources.csv" -a
+    - run: dispatch.sh ${{ secrets.GITHUB_TOKEN }}
+      shell: bash
+       
       
-  - name: push changes
-    uses: ad-m/github-push-action@v0.6.0
-    with:
-      github_token: ${{ secrets.GITHUB_TOKEN }}
-      branch: main  
