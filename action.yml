@@ -1,7 +1,7 @@
 name: 'Trigger index build'
 description: 'triggers a rebuild of the index'
 runs:
-  uses: "composite"
+  using: "composite"
   steps:
     - run: dispatch.sh ${{ secrets.GITHUB_TOKEN }}
       shell: bash
