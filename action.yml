@@ -7,7 +7,7 @@ runs:
       shell: bash
     - run: chmod +x "${{ github.action_path }}/dispatch.sh"
       shell: bash
-    - run: dispatch.sh  ${{ github.token }}
+    - run: dispatch.sh  "${{ github.token }}"
       shell: bash
        
       
