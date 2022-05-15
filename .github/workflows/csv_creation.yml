@@ -1,6 +1,7 @@
 name: Create resources
 
 on:
+  repository_dispatch:
   push:
     paths:
       - 'packages/'
