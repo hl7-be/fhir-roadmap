@@ -3,7 +3,7 @@ description: 'triggers a rebuild of the index'
 runs:
   using: "composite"
   steps:
-    - run: dispatch.sh ${{ secrets.GITHUB_TOKEN }}
+    - run: dispatch.sh $GITHUB_TOKEN
       shell: bash
        
       
