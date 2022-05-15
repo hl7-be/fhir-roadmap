@@ -53,6 +53,8 @@ def extract_relation(res,resource_type):
             value=element.get("binding",{}).get("valueSet")
             if binding:
               #  print(value)
+                if not value:
+                    value = ">NoType<"
                 stripped = value.split("|", 1)[0] #remove pipes
              #   if res.get("id")=="be-allergyintolerance":
             #      print(stripped)
@@ -162,7 +164,7 @@ def read_package(folder):
                 if (rtype=="NamingSystem"):
                     if ("uniqueId" in json_text) :
                        uris = [x for x in json_text["uniqueId"] if (x["type"] == "uri" )] 
-                       record["url"] = [x for x in uris if x["preferred"] == True][0]["value"]
+                       record["url"] = [x for x in uris if ("preferred" in x and x["preferred"] == True)][0]["value"]
                 else:
                     record["url"] = json_text.get('url')
 
