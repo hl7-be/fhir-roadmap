@@ -7,7 +7,10 @@ runs:
       shell: bash
     - run: chmod +x "${{ github.action_path }}/dispatch.sh"
       shell: bash
-    - run: dispatch.sh  "${{ secrets.ACTION_TOKEN }}"
+    - name: "Dispatch"
+      env:
+        ACTION_TOKEN: ${{ secrets.ACTION_TOKEN }}
+      run: dispatch.sh
       shell: bash
        
       
