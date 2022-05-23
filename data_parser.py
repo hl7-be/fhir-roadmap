@@ -26,7 +26,7 @@ def create_edges(element,relationdf):
     new_edge_info={"references":("references","references","curve","#000000"),"includes":("includes","Includes","bar","#7a8989"),"valuesFrom":("values_from","Values from","arrow", "#404000" ),"Bound_Exam":("binding_exm","Bound (Exam)","arrow", "#000000"),"Bound_Pref":("binding_pref","Bound (Pref)","arrow", "#000000"),"Bound_Ext":("binding_ext","Bound (Ext)","arrow", "#000000"),"Bound_Req":("binding_req","Bound (Req)","arrow", "#000000"),"extension":("extension","Extension","curve", "#400000" )}
     #print(element["id"])
 
-    relation_list=relationdf[relationdf["source"]==element["id"]]
+    relation_list=relationdf[relationdf["source_url"]==element["url"]]
     #print(relation_list)
     if len(relation_list)==0:
         return None
@@ -42,7 +42,7 @@ def create_edges(element,relationdf):
            # r_label=node["relation"]
             arrows=new_edge_info[node["relation"]][2]
             arrow_color=new_edge_info[node["relation"]][3]
-            edge={"from": node["target_id"],"to": element["id"], "relation":r, "label": r_label,"arrows": {"to":{ "enabled": True,"type":arrows} },"color": { "color": arrow_color }}
+            edge={"from": node["target_url"],"to": element["url"], "relation":r, "label": r_label,"arrows": {"to":{ "enabled": True,"type":arrows} },"color": { "color": arrow_color }}
          #   print(edge)
             edges_list.append(edge)
 
@@ -51,14 +51,14 @@ def get_data_and_create_node(datafile="data.csv",relationfile="relation.csv"):
     data=pd.read_csv(datafile,encoding="iso8859_1",sep=";",keep_default_na=False)
     relation=pd.read_csv(relationfile,encoding="iso8859_1",sep=";",keep_default_na=False)
 
-    colors={"ImplementationGuide":"#a8b94b","Transaction":"#cce5e5","Questionnaire":"#AD97EC","DataType":"#83986B","Profile":"#CFCFCF","CodeSystem":"#CFFFFF","ValueSet":"#CFFFCF","Extension":"#FFCFCF","NamingSystem":"#FFCFFF","Logical Model":"#87BEEF","Data type":"#CEBECF"}
+    colors={"ImplementationGuide":"#a8b94b","Transaction":"#cce5e5","Questionnaire":"#AD97EC","DataType":"#83986B","Profile":"#CFCFCF","CodeSystem":"#CFFFFF","ValueSet":"#CFFFCF","Extension":"#FFCFCF","NamingSystem":"#FFCFFF","Logical Model":"#87BEEF","Data type":"#CEBECF", "ExampleScenario":"red", "OperationDefinition":"blue", "Bundle":"teal"}
 
     for idx,element in data.iterrows():
     #  if element["topic"]=="Vaccination": #test only
             res={}
             
         #  print(element["topic"])
-            res["id"]=element["id"]
+            res["id"]=element["url"]
 
             res["topic"]=element["topic"]
             res["subtopic"]=element["subtopic"]
@@ -73,7 +73,7 @@ def get_data_and_create_node(datafile="data.csv",relationfile="relation.csv"):
                 status="draft"
             else:
                 status=element["status"]
-            res["label"]="*"+element["name"]+"**\n("+element["type"]+")\nStatus: "+status
+            res["label"]="*"+element["name"]+"**\n("+element["type"]+")\nStatus: "+status+"\n"+element['package']+ '('+element['pack_version']+')'
             create_edges(element,relation)
             nodes_list.append(res)
 

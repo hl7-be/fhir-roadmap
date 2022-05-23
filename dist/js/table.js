@@ -8,6 +8,8 @@ $(document).ready(function () {
     "ajax": "../data/data.json",
     "columns": [
       { "data": "id" },
+      { "data": "package" },
+      { "data": "pack_version" },
       { "data": "topic" },
       { "data": "subtopic" },
       { "data": "type" },

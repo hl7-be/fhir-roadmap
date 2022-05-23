@@ -9,7 +9,7 @@ serverlocation = 'https://build.fhir.org/ig/hl7-be/'
 igs = []
 package = 'package.tgz'
 target = './packages'
-exclude = ['..']
+exclude = ['..','hl7-be-fhir-medication','hl7-be-fhir-laboratory-report','hl7-be-fhir-referral-prescription','hl7-be-patient-dossier']
 
 os.makedirs(target, exist_ok=True)
 urllib.request.urlretrieve(serverlocation, target +'/'+ 'index.html')
