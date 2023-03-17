@@ -53,20 +53,18 @@ def extract_relation(res,resource_type):
             value=element.get("binding",{}).get("valueSet")
             if binding:
               #  print(value)
-                if not value:
-                    value = ">NoType<"
                 stripped = value.split("|", 1)[0] #remove pipes
              #   if res.get("id")=="be-allergyintolerance":
             #      print(stripped)
                 #print(resource_type,"binding -> ",binding,value)
-                dict_relat.append({"source":res.get("id"),"source_url":res.get("url"),"target_url":stripped,"relation":relation_type_data[binding]})
+                dict_relat.append({"source":res.get("id"),"target_url":stripped,"relation":relation_type_data[binding]})
             for l in element.get("type",[]):
                 if l.get("code",{})=="Extension":
                     #pass
                     if l.get("profile"):
-                        dict_relat.append({"source":res.get("id"),"source_url":res.get("url"),"target_url":l.get("profile")[0],"relation":"extension"})
+                        dict_relat.append({"source":res.get("id"),"target_url":l.get("profile")[0],"relation":"extension"})
                 for target_profile in l.get("targetProfile",[]):
-                    dict_relat.append({"source":res.get("id"),"source_url":res.get("url"),"target_url":target_profile,"relation":"references"})
+                    dict_relat.append({"source":res.get("id"),"target_url":target_profile,"relation":"references"})
 
                  #   print()
 
@@ -81,25 +79,25 @@ def extract_relation(res,resource_type):
                 stripped = value.split("|", 1)[0] #remove pipes
 
                 #print(resource_type,"binding -> ",binding,value)
-                dict_relat.append({"source":res.get("id"),"source_url":res.get("url"),"target_url":stripped,"relation":relation_type_data[binding]})
+                dict_relat.append({"source":res.get("id"),"target_url":stripped,"relation":relation_type_data[binding]})
             for l in element.get("type",[]):
                 if l.get("code",{})=="Extension":
                     #pass
                     if l.get("profile"):
                     #    print(l.get("profile")[0],res.get("id"))
-                        dict_relat.append({"source":res.get("id"),"source_url":res.get("url"),"target_url":l.get("profile")[0],"relation":"extension"})
+                        dict_relat.append({"source":res.get("id"),"target_url":l.get("profile")[0],"relation":"extension"})
                 for target_profile in l.get("targetProfile",[]):
-                    dict_relat.append({"source":res.get("id"),"source_url":res.get("url"),"target_url":target_profile,"relation":"references"})
+                    dict_relat.append({"source":res.get("id"),"target_url":target_profile,"relation":"references"})
 
                  #   print()
     elif resource_type=="ValueSet":
         for s in res.get("compose",{}).get("include",[]):
             #print(s)
             if s.get("system"):
-                dict_relat.append({"source":res.get("id"),"source_url":res.get("url"),"target_url":s.get("system"),"relation":"valuesFrom"})
+                dict_relat.append({"source":res.get("id"),"target_url":s.get("system"),"relation":"valuesFrom"})
             if s.get("valueSet"):
               #  print(s.get("valueSet"))
-                dict_relat.append({"source":res.get("id"),"source_url":res.get("url"),"target_url":s.get("valueSet")[0],"relation":"includes"})
+                dict_relat.append({"source":res.get("id"),"target_url":s.get("valueSet")[0],"relation":"includes"})
 
         #print(res.get("expansion",{}).get("contains",[]))
 
@@ -121,7 +119,7 @@ def read_package(folder):
     relations=[]
     record_upper={}
     for index, js in enumerate(new_files):
-        if (js.endswith(os.path.join('package','package.json'))):
+        if (js == 'packages/package.json'):
             with open(js, encoding='utf-8') as json_file:
                 json_text = json.load(json_file)
              #   print(json_text)
@@ -132,10 +130,7 @@ def read_package(folder):
                     record_upper["pack_author"] = json_text['author']
                 if('fhirVersion' in json_text) and (len(json_text['fhirVersion']) == 1) :
                     record_upper["pack_fhir_version"] = json_text['fhirVersion']
-                if ('name' in json_text):
-                    record_upper['package'] = json_text['name']
-                if ('version' in json_text):
-                    record_upper['pack_version'] = json_text['version']
+                
                 if('maintainers' in json_text):
                     for m in json_text['maintainers']:
                         if ('url' in m):
@@ -167,7 +162,7 @@ def read_package(folder):
                 if (rtype=="NamingSystem"):
                     if ("uniqueId" in json_text) :
                        uris = [x for x in json_text["uniqueId"] if (x["type"] == "uri" )] 
-                       record["url"] = [x for x in uris if ("preferred" in x and x["preferred"] == True)][0]["value"]
+                       record["url"] = [x for x in uris if x["preferred"] == True][0]["value"]
                 else:
                     record["url"] = json_text.get('url')
 
@@ -184,9 +179,9 @@ def read_package(folder):
                 record["owner"] = json_text.get('owner')
                 record["maturity"] = json_text.get('maturity')
                 record["status"] = json_text.get('status')
-                #record["pack_wg_url"] = json_text.get('pack_wg_url')
-                #record["pack_author"] = json_text.get('pack_author')
-                #record["pack_last_review_date"] = json_text.get('pack_last_review_date')
+                record["pack_wg_url"] = json_text.get('pack_wg_url')
+                record["pack_author"] = json_text.get('pack_author')
+                record["pack_last_review_date"] = json_text.get('pack_last_review_date')
                # record["relation"] = json_text.get('relation')
                # record["relation_type"] = json_text.get('relation_type')
                 record["legal"] = json_text.get('legal')
